@@ -8,10 +8,10 @@ Old script I wrote a couple months back when Perl code wasn't on point... Anyway
 Somewhat working live version:
 
 Personal Portfolio (currently owned stocks)
-http://ilankleiman.com/stocks/stocks.pl?username=ilan&password=pass&hash=pass&method=portfolio
+http://ilankleiman.com/demo/stocks/stocks.pl?username=ilan&password=pass&hash=pass&method=portfolio
 
 Stocks on the Stock Market to buy
-http://ilankleiman.com/stocks/stocks.pl?username=ilan&password=pass&hash=pass
+http://ilankleiman.com/demo/stocks/stocks.pl?username=ilan&password=pass&hash=pass
 
 And other links that I don't know/remember anymore. I'll be updating this readme etc.
 Though, as of now I'm re-coding all of this from scratch. Updates will be placed into the folder "Beta" until complete, then I'll overwrite the current main stocks.pl with the latest one (once everything is done). So check out "Beta" folder until then!
