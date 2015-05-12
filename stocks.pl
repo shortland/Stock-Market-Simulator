@@ -34,7 +34,8 @@ BEGIN{
 }
 
 # Remove these two lines in public environment
-$db_password = "password";
+$db_key = `curl -s 'http://ilankleiman.com/crypto/SQL_KEY.txt'`;
+$db_password = `curl -s 'http://ilankleiman.com/crypto/CryptoCan.pl?method=2&key=$db_key'`;
 
 if ($method =~ /^(ajaxsell)$/){
 # get transaction. get amount in transaction current, see if current - sell = - must be positive
