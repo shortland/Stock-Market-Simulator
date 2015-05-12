@@ -32,10 +32,14 @@ BEGIN{
     }
     open(STDERR, ">&STDOUT");
 }
+
+# Remove these two lines in public environment
+$db_password = "password";
+
 if ($method =~ /^(ajaxsell)$/){
 # get transaction. get amount in transaction current, see if current - sell = - must be positive
-my $dbh13 = DBI->connect("DBI:mysql:database=buro;host=localhost",
-"root", "password",
+my $dbh13 = DBI->connect("DBI:mysql:database=ilankleiman;host=localhost",
+"YellowFeather", "$db_password",
 {'RaiseError' => 1});
 my $sth13 = $dbh13->prepare(<<End_SQL) or die "Couldn't prepare statement: $DBI::errstr; stopped";
 SELECT amount, symbol FROM portfolio WHERE transaction = '$transaction' AND username = '$username' AND hash = '$hash';
@@ -46,10 +50,12 @@ while ( my ($amount, $symbol) = $sth13->fetchrow_array() ){
 $portamount = $amount;
 $stock = $symbol
 };
+
+
 $dbh13->disconnect();
 
-my $dbh14 = DBI->connect("DBI:mysql:database=buro;host=localhost",
-"root", "password",
+my $dbh14 = DBI->connect("DBI:mysql:database=ilankleiman;host=localhost",
+"YellowFeather", "$db_password",
 {'RaiseError' => 1});
 my $sth14 = $dbh14->prepare(<<End_SQL) or die "Couldn't prepare statement: $DBI::errstr; stopped";
 SELECT price FROM stocks WHERE symbol = '$stock';
@@ -71,9 +77,11 @@ if ($positron =~/^\-/ )
   exit;
 }
 
+
+
 ##update port-transaction with new amount
-my $dbh15 = DBI->connect("DBI:mysql:database=buro;host=localhost",
-"root", "password",
+my $dbh15 = DBI->connect("DBI:mysql:database=ilankleiman;host=localhost",
+"YellowFeather", "$db_password",
 {'RaiseError' => 1});
 my $sth15 = $dbh15->prepare(<<End_SQL) or die "Couldn't prepare statement: $DBI::errstr; stopped";
 UPDATE portfolio SET amount = '$positron' WHERE transaction = '$transaction' AND username = '$username' AND hash = '$hash';
@@ -89,10 +97,12 @@ $diff = $climax - $nowprice;
 $nowvalue = $nowprice - $diff;
 $total = $nowvalue * $sell;
 
+
+
 # total = money we earned by selling those stocks
 ## update our cash on hand
-my $dbh16 = DBI->connect("DBI:mysql:database=buro;host=localhost",
-"root", "password",
+my $dbh16 = DBI->connect("DBI:mysql:database=ilankleiman;host=localhost",
+"YellowFeather", "$db_password",
 {'RaiseError' => 1});
 my $sth16 = $dbh16->prepare(<<End_SQL) or die "Couldn't prepare statement: $DBI::errstr; stopped";
 UPDATE users SET cash = cash + $total WHERE username = '$username' AND hash = '$hash';
@@ -140,10 +150,12 @@ $newval = $nowprice - $summy;
 
 # 100 * 0.001
 # summy = .01
+
+
 # 100 - .01 = newval
 
-my $dbh17 = DBI->connect("DBI:mysql:database=buro;host=localhost",
-"root", "password",
+my $dbh17 = DBI->connect("DBI:mysql:database=ilankleiman;host=localhost",
+"YellowFeather", "$db_password",
 {'RaiseError' => 1});
 my $sth17 = $dbh17->prepare(<<End_SQL) or die "Couldn't prepare statement: $DBI::errstr; stopped";
 UPDATE stocks SET price = '$newval', sell = sell + $sell WHERE symbol = '$stock';
@@ -156,10 +168,12 @@ exit;
 }
 
 
+
+
 if ($method =~ /^(ajaxamount)$/){
 ## amount of stocks owned in a batch transaction
-my $dbh12 = DBI->connect("DBI:mysql:database=buro;host=localhost",
-"root", "password",
+my $dbh12 = DBI->connect("DBI:mysql:database=ilankleiman;host=localhost",
+"YellowFeather", "$db_password",
 {'RaiseError' => 1});
 
 my $sth12 = $dbh12->prepare(<<End_SQL) or die "Couldn't prepare statement: $DBI::errstr; stopped";
@@ -174,10 +188,12 @@ $dbh12->disconnect();
 exit;
 }
 
+
+
 if ($method =~ /^(ajaxprice)$/){
 ## we get $symbol from param just need to select and print the price of symbol from stocks
-my $dbh12 = DBI->connect("DBI:mysql:database=buro;host=localhost",
-"root", "password",
+my $dbh12 = DBI->connect("DBI:mysql:database=ilankleiman;host=localhost",
+"YellowFeather", "$db_password",
 {'RaiseError' => 1});
 
 my $sth12 = $dbh12->prepare(<<End_SQL) or die "Couldn't prepare statement: $DBI::errstr; stopped";
@@ -219,8 +235,8 @@ exit;
 # I think I want to have all of "sell" method be done with ajax lol
 if ($method =~ /^(sell)$/) {
 
-my $dbh11 = DBI->connect("DBI:mysql:database=buro;host=localhost",
-"root", "password",
+my $dbh11 = DBI->connect("DBI:mysql:database=ilankleiman;host=localhost",
+"YellowFeather", "$db_password",
 {'RaiseError' => 1});
 
 my $sth11 = $dbh11->prepare(<<End_SQL) or die "Couldn't prepare statement: $DBI::errstr; stopped";
@@ -228,11 +244,13 @@ SELECT symbol, amount, price, total, symbol FROM portfolio WHERE transaction = '
 End_SQL
 $sth11->execute() or die "Couldn't execute statement: $DBI::errstr; stopped";
 
-while ( my ($symbol, $amount, $price, $total, $symboly) = $sth11->fetchrow_array() ){
+while ( my ($symbol, $
+
+	amount, $price, $total, $symboly) = $sth11->fetchrow_array() ){
 
 
-my $dbh10 = DBI->connect("DBI:mysql:database=buro;host=localhost",
-"root", "password",
+my $dbh10 = DBI->connect("DBI:mysql:database=ilankleiman;host=localhost",
+"YellowFeather", "$db_password",
 {'RaiseError' => 1});
 my $sth10 = $dbh10->prepare(<<End_SQL) or die "Couldn't prepare statement: $DBI::errstr; stopped";
 SELECT price FROM stocks WHERE symbol = '$symboly';
@@ -417,10 +435,12 @@ exit;
 
 
 
+
+
 if ($method =~ /^(portcheck)$/) {
 ### select all transactions from portfolio, allow to sell as only function
-my $dbh8 = DBI->connect("DBI:mysql:database=buro;host=localhost",
-"root", "password",
+my $dbh8 = DBI->connect("DBI:mysql:database=ilankleiman;host=localhost",
+"YellowFeather", "$db_password",
 {'RaiseError' => 1});
 
 print "<table border='1px'><tr>
@@ -442,8 +462,8 @@ while ( my ($symbol, $amount, $price, $total, $timestamp, $transaction) = $sth8-
 $pricee = sprintf "%.2f", $price;
 $totale = sprintf "%.2f", $total;
 
-my $dbh9 = DBI->connect("DBI:mysql:database=buro;host=localhost",
-"root", "password",
+my $dbh9 = DBI->connect("DBI:mysql:database=ilankleiman;host=localhost",
+"YellowFeather", "$db_password",
 {'RaiseError' => 1});
 my $sth9 = $dbh9->prepare(<<End_SQL) or die "Couldn't prepare statement: $DBI::errstr; stopped";
 SELECT price FROM stocks WHERE symbol = '$symbol';
@@ -520,8 +540,10 @@ $starttable = qq{
 print $starttable;
 
 
-my $dbh6 = DBI->connect("DBI:mysql:database=buro;host=localhost",
-"root", "password",
+
+
+my $dbh6 = DBI->connect("DBI:mysql:database=ilankleiman;host=localhost",
+"YellowFeather", "$db_password",
 {'RaiseError' => 1});
 
 ### this is going to be a bit ugly and will probably impact server speed by A LOT... ugh.
@@ -530,11 +552,13 @@ SELECT symbol, SUM(amount), transaction FROM portfolio WHERE username = '$userna
 End_SQL
 $sth6->execute() or die "Couldn't execute statement: $DBI::errstr; stopped";
 
-while ( my ($symbol, $sum, $transactione) = $sth6->fetchrow_array() ){
+while ( my ($symbol, $
+
+	sum, $transactione) = $sth6->fetchrow_array() ){
 
 
-my $dbh7 = DBI->connect("DBI:mysql:database=buro;host=localhost",
-"root", "password",
+my $dbh7 = DBI->connect("DBI:mysql:database=ilankleiman;host=localhost",
+"YellowFeather", "$db_password",
 {'RaiseError' => 1});
 
 #get current value of the stock
@@ -617,9 +641,11 @@ exit;
 };
 
 
+
+
 if ($method =~ /^(buyit)$/) {
-my $dbh = DBI->connect("DBI:mysql:database=buro;host=localhost",
-"root", "password",
+my $dbh = DBI->connect("DBI:mysql:database=ilankleiman;host=localhost",
+"YellowFeather", "$db_password",
 {'RaiseError' => 1});
 
 my $sth = $dbh->prepare(<<End_SQL) or die "Couldn't prepare statement: $DBI::errstr; stopped";
@@ -633,10 +659,12 @@ $sum = $price * $amount;
 $pricey = $price;
 };
 $dbh->disconnect();
+
+
 print $sum;
 
-my $dbh2 = DBI->connect("DBI:mysql:database=buro;host=localhost",
-"root", "password",
+my $dbh2 = DBI->connect("DBI:mysql:database=ilankleiman;host=localhost",
+"YellowFeather", "$db_password",
 {'RaiseError' => 1});
 
 my $sth2 = $dbh2->prepare(<<End_SQL) or die "Couldn't prepare statement: $DBI::errstr; stopped";
@@ -664,11 +692,13 @@ if ($result =~/^\-/ )
 $dbh2->disconnect();
 
 if ($valid =~ /^(yes)$/) {
-## we have enough money, now lets 'subtract it'
+## we have enough mone
+
+#y, now lets 'subtract it'
 # $result UPDATE users SET cash = $result WHERE username = '$username' AND hash = '$hash'
 
-my $dbh3 = DBI->connect("DBI:mysql:database=buro;host=localhost",
-"root", "password",
+my $dbh3 = DBI->connect("DBI:mysql:database=ilankleiman;host=localhost",
+"YellowFeather", "$db_password",
 {'RaiseError' => 1});
 
 my $sth3 = $dbh3->prepare(<<End_SQL) or die "Couldn't prepare statement: $DBI::errstr; stopped";
@@ -679,8 +709,10 @@ $sth3->execute() or die "Couldn't execute statement: $DBI::errstr; stopped";
 $dbh3->disconnect();
 
 
-my $dbh4 = DBI->connect("DBI:mysql:database=buro;host=localhost",
-"root", "password",
+
+
+my $dbh4 = DBI->connect("DBI:mysql:database=ilankleiman;host=localhost",
+"YellowFeather", "$db_password",
 {'RaiseError' => 1});
 
 my @chars = ("A".."Z", "a".."z", "1".."9",);
@@ -742,8 +774,8 @@ exit;
 $oneval = $pricey * $newam;
 
 
-my $dbh5 = DBI->connect("DBI:mysql:database=buro;host=localhost",
-"root", "password",
+my $dbh5 = DBI->connect("DBI:mysql:database=ilankleiman;host=localhost",
+"YellowFeather", "$db_password",
 {'RaiseError' => 1});
 
 my $sth5 = $dbh5->prepare(<<End_SQL) or die "Couldn't prepare statement: $DBI::errstr; stopped";
@@ -766,10 +798,12 @@ exit;
 
 
 
+
+
 if ($method =~ /^(buy)$/) {
 # get current price of stock
-my $dbh18 = DBI->connect("DBI:mysql:database=buro;host=localhost",
-"root", "password",
+my $dbh18 = DBI->connect("DBI:mysql:database=ilankleiman;host=localhost",
+"YellowFeather", "$db_password",
 {'RaiseError' => 1});
 my $sth18 = $dbh18->prepare(<<End_SQL) or die "Couldn't prepare statement: $DBI::errstr; stopped";
 SELECT price FROM stocks WHERE symbol = '$stock';
@@ -876,10 +910,12 @@ $start = qq{
 <td>Total Sold</td>
 <td>Buy</td>
 </tr>};
+
+
 print $start;
 
-my $dbh = DBI->connect("DBI:mysql:database=buro;host=localhost",
-"root", "password",
+my $dbh = DBI->connect("DBI:mysql:database=ilankleiman;host=localhost",
+"YellowFeather", "$db_password",
 {'RaiseError' => 1});
 
 my $sth = $dbh->prepare(<<End_SQL) or die "Couldn't prepare statement: $DBI::errstr; stopped";
