@@ -8,8 +8,8 @@ use CGI::Cookie;
 
 BEGIN
 {
-    $DB_SQL_username = "YellowFeather";
-    $DB_SQL_password = "LegoApril181998!";
+    $DB_SQL_username = "username";
+    $DB_SQL_password = "password";
 
     $q = new CGI;
     $username = $q->param('username');
