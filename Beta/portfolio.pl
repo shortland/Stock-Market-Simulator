@@ -1,14 +1,23 @@
 #!/usr/bin/perl
 
+use CGI::Carp qw( fatalsToBrowser );
 use CGI;
-use DBI;
 use MIME::Base64;
+use DBI;
+use CGI::Cookie;
 
-BEGIN
+BEGIN 
 {
-    $cgi = new CGI;
-    $username = $cgi->param("username");
-   # print $cgi->header(-type=>'text/html', -status=>'200 OK', -charset => 'UTF-8');
-    #open(STDERR, ">&STDOUT");
+	$cgi = new CGI;
+	#$username = $cgi->param("username");
+
 }
-require "login/cookie
+require "login/cookie_login.pl";
+
+print $real_username;
+
+print qq
+{
+<p>This is cookie protected!</p>
+<p>Members only content here!</p>
+};
